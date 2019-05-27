@@ -7,15 +7,17 @@
 //
 
 import UIKit
-
+import Firebase
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
+    /*se lance à l'initialisation de l'app*/
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        FirebaseApp.configure()
+        /*on verifie si l'utilisateur est déjà connecté*/
+        rememberLogin()
         return true
     }
 
@@ -41,6 +43,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
-
+    /*on verifie si un utilisateur est déjà connecté si oui on lance directement la tabBarView */
+    func rememberLogin(){
+        let user : String? = UserDefaults.standard.string(forKey: "user")
+        if user != nil {
+            let board : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+            let tabBar = board.instantiateViewController(withIdentifier: "tabBar") as! UITabBarController
+            window?.rootViewController = tabBar
+        }
+    }
+    
+    
 }
 
